@@ -1,4 +1,4 @@
-package snapfan.androidclient.util;
+package snapfan.androidclient.api;
 
 import com.github.kevinsawicki.http.HttpRequest;
 import net.pickapack.io.serialization.JsonSerializationHelper;

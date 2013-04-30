@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import snapfan.androidclient.util.ApiHelper;
+import snapfan.androidclient.api.ApiHelper;
 
 public class LoginActivity extends Activity {
     private TextView textViewResponse;
@@ -36,5 +36,4 @@ public class LoginActivity extends Activity {
             }
         });
     }
-
 }

@@ -15,7 +15,7 @@ import net.pickapack.model.ModelElement;
 import net.pickapack.notice.model.forum.Forum;
 import net.pickapack.notice.model.forum.ForumThread;
 import net.pickapack.notice.model.forum.ForumThreadMessage;
-import snapfan.androidclient.util.ApiHelper;
+import snapfan.androidclient.api.ApiHelper;
 
 import java.util.Arrays;
 import java.util.LinkedList;
