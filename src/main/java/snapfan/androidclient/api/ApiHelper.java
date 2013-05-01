@@ -15,40 +15,66 @@ public class ApiHelper {
     private static final String SERVER_URL = "http://10.0.2.2:3721";
 //    private static final String SERVER_URL = "http://110.34.174.170:3721";
 
-    public static String login(String userId, String password) {
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put("action", "login");
-            data.put("userId", userId);
-            data.put("password", password);
-
-            HttpRequest request = HttpRequest.post(SERVER_URL).connectTimeout(6000).readTimeout(30000).form(data);
-
-            if(request.code() != HttpStatus.SC_OK) {
-                return null;
-            }
-
-            return request.body("utf-8");
-        } catch (HttpRequest.HttpRequestException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
+    public static String login(final String userId, final String password) {
+        return call(new HashMap<String, String>(){{
+            put("action", "login");
+            put("userId", userId);
+            put("password", password);
+        }});
     }
+
+    //TODO: add handling for news items
 
     public static Forum[] getAllForums() {
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put("action", "getAllForums");
+        return call(new HashMap<String, String>(){{
+            put("action", "getAllForums");
+        }}, Forum[].class);
+    }
 
+    public static ForumThread[] getForumThreadsByParentId(final long parentId) {
+        return call(new HashMap<String, String>(){{
+            put("action", "getForumThreadsByParentId");
+            put("parentId", parentId + "");
+        }}, ForumThread[].class);
+    }
+
+    public static ForumThreadMessage[] getForumThreadMessagesByParentId(final long parentId) {
+        return call(new HashMap<String, String>(){{
+            put("action", "getForumThreadMessagesByParentId");
+            put("parentId", parentId + "");
+        }}, ForumThreadMessage[].class);
+    }
+
+    public static Forum getParentByForumId(final long forumId) {
+        return call(new HashMap<String, String>(){{
+            put("action", "getParentByForumId");
+            put("forumId", forumId + "");
+        }}, Forum.class);
+    }
+
+    public static Forum getParentByForumThreadId(final long forumThreadId) {
+        return call(new HashMap<String, String>(){{
+            put("action", "getParentByForumThreadId");
+            put("forumThreadId", forumThreadId + "");
+        }}, Forum.class);
+    }
+
+    public static ForumThread getParentByForumThreadMessageId(final long forumThreadMessageId) {
+        return call(new HashMap<String, String>(){{
+            put("action", "getParentByForumThreadMessageId");
+            put("forumThreadMessageId", forumThreadMessageId + "");
+        }}, ForumThread.class);
+    }
+
+    private static String call(Map<String, String> data) {
+        try {
             HttpRequest request = HttpRequest.post(SERVER_URL).connectTimeout(6000).readTimeout(30000).form(data);
 
             if(request.code() != HttpStatus.SC_OK) {
                 return null;
             }
 
-            String result = request.body("utf-8").trim();
-            return JsonSerializationHelper.deserialize(Forum[].class, result);
+            return request.body("utf-8").trim();
         } catch (HttpRequest.HttpRequestException e) {
             return null;
         } catch (Exception e) {
@@ -56,12 +82,8 @@ public class ApiHelper {
         }
     }
 
-    public static ForumThread[] getForumThreadsByParentId(long parentId) {
+    private static <T> T call(Map<String, String> data, Class<T> clz) {
         try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put("action", "getForumThreadsByParentId");
-            data.put("parentId", parentId + "");
-
             HttpRequest request = HttpRequest.post(SERVER_URL).connectTimeout(6000).readTimeout(30000).form(data);
 
             if(request.code() != HttpStatus.SC_OK) {
@@ -69,91 +91,7 @@ public class ApiHelper {
             }
 
             String result = request.body("utf-8").trim();
-            return JsonSerializationHelper.deserialize(ForumThread[].class, result);
-        } catch (HttpRequest.HttpRequestException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static ForumThreadMessage[] getForumThreadMessagesByParentId(long parentId) {
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put("action", "getForumThreadMessagesByParentId");
-            data.put("parentId", parentId + "");
-
-            HttpRequest request = HttpRequest.post(SERVER_URL).connectTimeout(6000).readTimeout(30000).form(data);
-
-            if(request.code() != HttpStatus.SC_OK) {
-                return null;
-            }
-
-            String result = request.body("utf-8").trim();
-            return JsonSerializationHelper.deserialize(ForumThreadMessage[].class, result);
-        } catch (HttpRequest.HttpRequestException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static Forum getParentByForumId(long forumId) {
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put("action", "getParentByForumId");
-            data.put("forumId", forumId + "");
-
-            HttpRequest request = HttpRequest.post(SERVER_URL).connectTimeout(6000).readTimeout(30000).form(data);
-
-            if(request.code() != HttpStatus.SC_OK) {
-                return null;
-            }
-
-            String result = request.body("utf-8").trim();
-            return JsonSerializationHelper.deserialize(Forum.class, result);
-        } catch (HttpRequest.HttpRequestException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static Forum getParentByForumThreadId(long forumThreadId) {
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put("action", "getParentByForumThreadId");
-            data.put("forumThreadId", forumThreadId + "");
-
-            HttpRequest request = HttpRequest.post(SERVER_URL).connectTimeout(6000).readTimeout(30000).form(data);
-
-            if(request.code() != HttpStatus.SC_OK) {
-                return null;
-            }
-
-            String result = request.body("utf-8").trim();
-            return JsonSerializationHelper.deserialize(Forum.class, result);
-        } catch (HttpRequest.HttpRequestException e) {
-            return null;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static ForumThread getParentByForumThreadMessageId(long forumThreadMessageId) {
-        try {
-            Map<String, String> data = new HashMap<String, String>();
-            data.put("action", "getParentByForumThreadMessageId");
-            data.put("forumThreadMessageId", forumThreadMessageId + "");
-
-            HttpRequest request = HttpRequest.post(SERVER_URL).connectTimeout(6000).readTimeout(30000).form(data);
-
-            if(request.code() != HttpStatus.SC_OK) {
-                return null;
-            }
-
-            String result = request.body("utf-8").trim();
-            return JsonSerializationHelper.deserialize(ForumThread.class, result);
+            return JsonSerializationHelper.deserialize(clz, result);
         } catch (HttpRequest.HttpRequestException e) {
             return null;
         } catch (Exception e) {
