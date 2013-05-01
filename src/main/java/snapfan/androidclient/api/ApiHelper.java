@@ -5,7 +5,9 @@ import net.pickapack.io.serialization.JsonSerializationHelper;
 import net.pickapack.notice.model.forum.Forum;
 import net.pickapack.notice.model.forum.ForumThread;
 import net.pickapack.notice.model.forum.ForumThreadMessage;
+import net.pickapack.notice.model.news.NewsItem;
 import org.apache.http.HttpStatus;
+import snapfan.androidclient.SnapfanApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +25,20 @@ public class ApiHelper {
         }});
     }
 
-    //TODO: add handling for news items
+    public static NewsItem[] getNewsItems(final int pageIndex) {
+        return call(new HashMap<String, String>(){{
+            put("action", "getNewsItems");
+            put("pageIndex", pageIndex + "");
+            put("pageSize", SnapfanApplication.PAGE_SIZE + "");
+        }}, NewsItem[].class);
+    }
+
+    public static NewsItem getNewsItem(final long newsItemId) {
+        return call(new HashMap<String, String>(){{
+            put("action", "getNewsItem");
+            put("newsItemId", newsItemId + "");
+        }}, NewsItem.class);
+    }
 
     public static Forum[] getAllForums() {
         return call(new HashMap<String, String>(){{
