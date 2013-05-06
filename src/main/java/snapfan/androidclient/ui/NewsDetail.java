@@ -1,7 +1,6 @@
 package snapfan.androidclient.ui;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,13 +17,11 @@ import snapfan.androidclient.util.StringUtils;
 import snapfan.androidclient.util.UIHelper;
 
 public class NewsDetail extends Activity {
-    private FrameLayout header;
+    private FrameLayout footer;
     private ImageView home;
     private ImageView refresh;
-    private TextView headTitle;
     private ProgressBar progressBar;
     private ScrollView scrollView;
-    private ViewSwitcher viewSwitcher;
 
     private TextView title;
     private TextView author;
@@ -34,9 +31,6 @@ public class NewsDetail extends Activity {
     private Handler handler;
     private NewsItem newsDetail;
     private long newsId;
-
-    private final static int VIEW_SWITCH_TYPE_DETAIL = 0x001;
-    private final static int VIEW_SWITCH_TYPE_COMMENTS = 0x002;
 
     private final static int DATA_LOAD_ING = 0x001;
     private final static int DATA_LOAD_COMPLETE = 0x002;
@@ -59,12 +53,10 @@ public class NewsDetail extends Activity {
     private void initView() {
         newsId = getIntent().getLongExtra("news_id", 0);
 
-        header = (FrameLayout) findViewById(R.id.news_detail_header);
+        footer = (FrameLayout) findViewById(R.id.news_detail_footer);
         home = (ImageView) findViewById(R.id.news_detail_home);
         refresh = (ImageView) findViewById(R.id.news_detail_refresh);
-        headTitle = (TextView) findViewById(R.id.news_detail_head_title);
-        progressBar = (ProgressBar) findViewById(R.id.news_detail_head_progress);
-        viewSwitcher = (ViewSwitcher) findViewById(R.id.news_detail_viewswitcher);
+        progressBar = (ProgressBar) findViewById(R.id.news_detail_footer_progress);
         scrollView = (ScrollView) findViewById(R.id.news_detail_scrollview);
 
         title = (TextView) findViewById(R.id.news_detail_title);
@@ -141,19 +133,6 @@ public class NewsDetail extends Activity {
         }.start();
     }
 
-    private void viewSwitch(int type) {
-        switch (type) {
-            case VIEW_SWITCH_TYPE_DETAIL:
-                headTitle.setText(R.string.news_detail_head_title);
-                viewSwitcher.setDisplayedChild(0);
-                break;
-            case VIEW_SWITCH_TYPE_COMMENTS:
-                headTitle.setText(R.string.comment_list_head_title);
-                viewSwitcher.setDisplayedChild(1);
-                break;
-        }
-    }
-
     private void headButtonSwitch(int type) {
         switch (type) {
             case DATA_LOAD_ING:
@@ -174,14 +153,6 @@ public class NewsDetail extends Activity {
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) return;
-        if (data == null) return;
-
-        viewSwitch(VIEW_SWITCH_TYPE_COMMENTS);
-    }
-
     private void registerOnDoubleTapEvent() {
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
@@ -192,13 +163,13 @@ public class NewsDetail extends Activity {
                     params.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
                     getWindow().setAttributes(params);
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                    header.setVisibility(View.VISIBLE);
+                    footer.setVisibility(View.VISIBLE);
                 } else {
                     WindowManager.LayoutParams params = getWindow().getAttributes();
                     params.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
                     getWindow().setAttributes(params);
                     getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                    header.setVisibility(View.GONE);
+                    footer.setVisibility(View.GONE);
                 }
                 return true;
             }

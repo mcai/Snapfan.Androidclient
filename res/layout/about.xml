@@ -12,7 +12,7 @@
             android:layout_marginBottom="200dip"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="Notice Android client"/>
+            android:text="SnapFan Android client"/>
 
     <TextView
             android:id="@+id/about_version"
@@ -35,6 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="30dip"
-            android:text="Copyright ©2010-2012 Min Cai."/>
+            android:text="Copyright ©2010-2013 Min Cai."/>
 
 </FrameLayout>
