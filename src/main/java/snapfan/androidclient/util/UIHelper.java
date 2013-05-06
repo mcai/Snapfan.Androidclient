@@ -15,7 +15,6 @@ public class UIHelper {
     public final static int LIST_VIEW_ACTION_INIT = 0x01;
     public final static int LIST_VIEW_ACTION_REFRESH = 0x02;
     public final static int LIST_VIEW_ACTION_SCROLL = 0x03;
-    public final static int LIST_VIEW_ACTION_CHANGE_CATALOG = 0x04;
 
     public final static int LIST_VIEW_DATA_MORE = 0x01;
     public final static int LIST_VIEW_DATA_LOADING = 0x02;
@@ -27,50 +26,23 @@ public class UIHelper {
             "pre {font-size:9pt;line-height:12pt;font-family:Courier New,Arial;border:1px solid #ddd;border-left:5px solid #6CE26C;background:#f6f6f6;padding:5px;} " +
             "a.tag {font-size:15px;text-decoration:none;background-color:#bbd6f3;border-bottom:2px solid #3E6D8E;border-right:2px solid #7F9FB6;color:#284a7b;margin:2px 2px 2px 0;padding:2px 4px;white-space:nowrap;}</style>";
 
-    public static void showHome(Activity activity) {
-        Intent intent = new Intent(activity, Main.class);
-        activity.startActivity(intent);
+    public static void gotoHome(Activity activity) {
+        activity.startActivity(new Intent(activity, Main.class));
         activity.finish();
     }
 
-    public static void showNewsDetail(Context context, long newsId) {
+    public static void gotoNewsDetail(Context context, NewsItem newsItem) {
         Intent intent = new Intent(context, NewsDetail.class);
-        intent.putExtra("news_id", newsId);
+        intent.putExtra("news_id", newsItem.getId());
         context.startActivity(intent);
     }
 
-    public static void showNewsRedirect(Context context, NewsItem news) {
-        showNewsDetail(context, news.getId());
-    }
-
-    public static void showUrlRedirect(Context context, String url) {
-        URLs urls = URLs.parseURL(url);
-        if (urls != null) {
-            showLinkRedirect(context, urls.getObjType(), urls.getObjId(), urls.getObjKey());
-        } else {
-            openBrowser(context, url);
-        }
-    }
-
-    public static void showLinkRedirect(Context context, int objType, int objId, String objKey) {
-        switch (objType) {
-            case URLs.URL_OBJ_TYPE_NEWS:
-                showNewsDetail(context, objId);
-                break;
-            case URLs.URL_OBJ_TYPE_OTHER:
-                openBrowser(context, objKey);
-                break;
-        }
-    }
-
-    public static void openBrowser(Context context, String url) {
+    public static void gotoUrl(Context context, String url) {
         try {
-            Uri uri = Uri.parse(url);
-            Intent it = new Intent(Intent.ACTION_VIEW, uri);
-            context.startActivity(it);
+            context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
         } catch (Exception e) {
             e.printStackTrace();
-            ToastMessage(context, "无法浏览此网页", 500);
+            showToastMessage(context, "无法浏览此网页", 500);
         }
     }
 
@@ -78,17 +50,17 @@ public class UIHelper {
         return new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                showUrlRedirect(view.getContext(), url);
+                gotoUrl(view.getContext(), url);
                 return true;
             }
         };
     }
 
-    public static void ToastMessage(Context cont, int msg) {
+    public static void showToastMessage(Context cont, int msg) {
         Toast.makeText(cont, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public static void ToastMessage(Context cont, String msg, int time) {
+    public static void showToastMessage(Context cont, String msg, int time) {
         Toast.makeText(cont, msg, time).show();
     }
 }

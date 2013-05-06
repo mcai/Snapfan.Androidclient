@@ -11,7 +11,7 @@ import net.pickapack.notice.model.news.NewsItem;
 import snapfan.androidclient.R;
 import snapfan.androidclient.adapter.ListViewNewsAdapter;
 import snapfan.androidclient.api.ApiHelper;
-import snapfan.androidclient.util.StringUtils;
+import snapfan.androidclient.util.StringHelper;
 import snapfan.androidclient.util.UIHelper;
 import snapfan.androidclient.widget.PullToRefreshListView;
 
@@ -79,7 +79,7 @@ public class Main extends Activity {
                 }
                 if (news == null) return;
 
-                UIHelper.showNewsRedirect(view.getContext(), news);
+                UIHelper.gotoNewsDetail(view.getContext(), news);
             }
         });
         listViewNews.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -96,7 +96,7 @@ public class Main extends Activity {
                     scrollEnd = false;
                 }
 
-                int lvDataState = StringUtils.toInt(listViewNews.getTag());
+                int lvDataState = StringHelper.toInteger(listViewNews.getTag());
                 if (scrollEnd && lvDataState == UIHelper.LIST_VIEW_DATA_MORE) {
                     listViewNews.setTag(UIHelper.LIST_VIEW_DATA_LOADING);
                     listViewNewsFootMore.setText(R.string.load_ing);
@@ -144,9 +144,6 @@ public class Main extends Activity {
                 if (msg.arg1 == UIHelper.LIST_VIEW_ACTION_REFRESH) {
                     lv.onRefreshComplete(getString(R.string.pull_to_refresh_update) + new Date().toLocaleString());
                     lv.setSelection(0);
-                } else if (msg.arg1 == UIHelper.LIST_VIEW_ACTION_CHANGE_CATALOG) {
-                    lv.onRefreshComplete();
-                    lv.setSelection(0);
                 }
             }
         };
@@ -156,7 +153,6 @@ public class Main extends Activity {
         switch (actionType) {
             case UIHelper.LIST_VIEW_ACTION_INIT:
             case UIHelper.LIST_VIEW_ACTION_REFRESH:
-            case UIHelper.LIST_VIEW_ACTION_CHANGE_CATALOG:
                 NewsItem[] newsItemList = (NewsItem[]) obj;
                 listViewNewsSumData = what;
                 listViewNewsData.clear();

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import net.pickapack.notice.model.news.NewsItem;
 import snapfan.androidclient.R;
-import snapfan.androidclient.util.StringUtils;
+import snapfan.androidclient.util.StringHelper;
 
 import java.util.List;
 
@@ -32,18 +32,22 @@ public class ListViewNewsAdapter extends BaseAdapter {
         this.listItems = data;
     }
 
+    @Override
     public int getCount() {
         return listItems.size();
     }
 
+    @Override
     public Object getItem(int arg0) {
         return null;
     }
 
+    @Override
     public long getItemId(int arg0) {
         return 0;
     }
 
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ListItemView listItemView;
 
@@ -67,9 +71,9 @@ public class ListViewNewsAdapter extends BaseAdapter {
         listItemView.title.setText(newsItem.getTitle());
         listItemView.title.setTag(newsItem);
         listItemView.author.setText(newsItem.getAuthor());
-        listItemView.date.setText(StringUtils.friendly_time(newsItem.getCreateTime()));
+        listItemView.date.setText(StringHelper.getFriendlyTime(newsItem.getCreateTime()));
         listItemView.count.setText("<N/A>");
-        listItemView.flag.setVisibility(StringUtils.isToday(newsItem.getCreateTime()) ? View.VISIBLE : View.GONE);
+        listItemView.flag.setVisibility(StringHelper.isToday(newsItem.getCreateTime()) ? View.VISIBLE : View.GONE);
 
         return convertView;
     }

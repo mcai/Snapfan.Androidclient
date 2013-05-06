@@ -13,7 +13,7 @@ import android.widget.*;
 import net.pickapack.notice.model.news.NewsItem;
 import snapfan.androidclient.R;
 import snapfan.androidclient.api.ApiHelper;
-import snapfan.androidclient.util.StringUtils;
+import snapfan.androidclient.util.StringHelper;
 import snapfan.androidclient.util.UIHelper;
 
 public class NewsDetail extends Activity {
@@ -71,7 +71,7 @@ public class NewsDetail extends Activity {
 
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                UIHelper.showHome(NewsDetail.this);
+                UIHelper.gotoHome(NewsDetail.this);
             }
         });
         refresh.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,7 @@ public class NewsDetail extends Activity {
 
                     title.setText(newsDetail.getTitle());
                     author.setText(newsDetail.getAuthor());
-                    pubDate.setText(StringUtils.friendly_time(newsDetail.getCreateTime()));
+                    pubDate.setText(StringHelper.getFriendlyTime(newsDetail.getCreateTime()));
 
                     String body = UIHelper.WEB_STYLE + newsDetail.getBody();
                     boolean isLoadImage = true;
@@ -109,7 +109,7 @@ public class NewsDetail extends Activity {
                 } else if (message.what == 0) {
                     headButtonSwitch(DATA_LOAD_FAIL);
 
-                    UIHelper.ToastMessage(NewsDetail.this, R.string.msg_load_is_null);
+                    UIHelper.showToastMessage(NewsDetail.this, R.string.msg_load_is_null);
                 } else if (message.what == -1 && message.obj != null) {
                     headButtonSwitch(DATA_LOAD_FAIL);
                 }
