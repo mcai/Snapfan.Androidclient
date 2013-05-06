@@ -12,15 +12,15 @@ import snapfan.androidclient.ui.Main;
 import snapfan.androidclient.ui.NewsDetail;
 
 public class UIHelper {
-    public final static int LISTVIEW_ACTION_INIT = 0x01;
-    public final static int LISTVIEW_ACTION_REFRESH = 0x02;
-    public final static int LISTVIEW_ACTION_SCROLL = 0x03;
-    public final static int LISTVIEW_ACTION_CHANGE_CATALOG = 0x04;
+    public final static int LIST_VIEW_ACTION_INIT = 0x01;
+    public final static int LIST_VIEW_ACTION_REFRESH = 0x02;
+    public final static int LIST_VIEW_ACTION_SCROLL = 0x03;
+    public final static int LIST_VIEW_ACTION_CHANGE_CATALOG = 0x04;
 
-    public final static int LISTVIEW_DATA_MORE = 0x01;
-    public final static int LISTVIEW_DATA_LOADING = 0x02;
-    public final static int LISTVIEW_DATA_FULL = 0x03;
-    public final static int LISTVIEW_DATA_EMPTY = 0x04;
+    public final static int LIST_VIEW_DATA_MORE = 0x01;
+    public final static int LIST_VIEW_DATA_LOADING = 0x02;
+    public final static int LIST_VIEW_DATA_FULL = 0x03;
+    public final static int LIST_VIEW_DATA_EMPTY = 0x04;
 
     public final static String WEB_STYLE = "<style>* {font-size:16px;line-height:20px;} p {color:#333;} a {color:#3E62A6;} img {max-width:310px;} " +
             "img.alignleft {float:left;max-width:120px;margin:0 10px 5px 0;border:1px solid #ccc;background:#fff;padding:2px;} " +

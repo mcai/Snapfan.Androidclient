@@ -14,7 +14,6 @@ import snapfan.androidclient.util.StringUtils;
 import java.util.List;
 
 public class ListViewNewsAdapter extends BaseAdapter {
-    private Context context;
     private List<NewsItem> listItems;
     private LayoutInflater listContainer;
     private int itemViewResource;
@@ -28,7 +27,6 @@ public class ListViewNewsAdapter extends BaseAdapter {
     }
 
     public ListViewNewsAdapter(Context context, List<NewsItem> data, int resource) {
-        this.context = context;
         this.listContainer = LayoutInflater.from(context);
         this.itemViewResource = resource;
         this.listItems = data;

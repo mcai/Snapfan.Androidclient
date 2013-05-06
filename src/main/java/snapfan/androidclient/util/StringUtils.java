@@ -123,12 +123,4 @@ public class StringUtils {
         if (obj == null) return 0;
         return toInt(obj.toString(), 0);
     }
-
-    public static boolean toBool(String b) {
-        try {
-            return Boolean.parseBoolean(b);
-        } catch (Exception e) {
-        }
-        return false;
-    }
 }

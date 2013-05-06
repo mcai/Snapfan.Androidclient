@@ -7,7 +7,6 @@ import net.pickapack.notice.model.forum.ForumThread;
 import net.pickapack.notice.model.forum.ForumThreadMessage;
 import net.pickapack.notice.model.news.NewsItem;
 import org.apache.http.HttpStatus;
-import snapfan.androidclient.SnapfanApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +24,11 @@ public class ApiHelper {
         }});
     }
 
-    public static NewsItem[] getNewsItems(final int pageIndex) {
+    public static NewsItem[] getNewsItems(final int pageIndex, final int pageSize) {
         return call(new HashMap<String, String>(){{
             put("action", "getNewsItems");
             put("pageIndex", pageIndex + "");
-            put("pageSize", SnapfanApplication.PAGE_SIZE + "");
+            put("pageSize", pageSize + "");
         }}, NewsItem[].class);
     }
 
