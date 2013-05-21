@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 import net.pickapack.notice.model.news.NewsItem;
+import snapfan.androidclient.ui.ImageGallery;
 import snapfan.androidclient.ui.Main;
 import snapfan.androidclient.ui.NewsDetail;
 
@@ -34,6 +35,12 @@ public class UIHelper {
     public static void gotoNewsDetail(Context context, NewsItem newsItem) {
         Intent intent = new Intent(context, NewsDetail.class);
         intent.putExtra("news_id", newsItem.getId());
+        context.startActivity(intent);
+    }
+
+    public static void gotoImageGallery(Context context, NewsItem newsItem) {
+        Intent intent = new Intent(context, ImageGallery.class);
+        intent.putExtra("image_urls", newsItem.getAttachmentUrls().toArray(new String[newsItem.getAttachmentUrls().size()]));
         context.startActivity(intent);
     }
 

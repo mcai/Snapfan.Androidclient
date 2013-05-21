@@ -27,6 +27,8 @@
         </activity>
 
         <activity android:name=".ui.NewsDetail" android:theme="@style/Theme.SlideTop" android:screenOrientation="portrait" android:configChanges="keyboardHidden|orientation"/>
+
+        <activity android:name=".ui.ImageGallery" android:configChanges="keyboardHidden|orientation"/>
     </application>
 
 </manifest>

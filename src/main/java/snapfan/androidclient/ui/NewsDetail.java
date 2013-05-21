@@ -29,7 +29,7 @@ public class NewsDetail extends Activity {
 
     private WebView webView;
     private Handler handler;
-    private NewsItem newsDetail;
+    private NewsItem newsItem;
     private long newsId;
 
     private final static int DATA_LOAD_ING = 0x001;
@@ -87,11 +87,11 @@ public class NewsDetail extends Activity {
                 if (message.what == 1) {
                     headButtonSwitch(DATA_LOAD_COMPLETE);
 
-                    title.setText(newsDetail.getTitle());
-                    author.setText(newsDetail.getAuthor());
-                    pubDate.setText(StringHelper.getFriendlyTime(newsDetail.getCreateTime()));
+                    title.setText(newsItem.getTitle());
+                    author.setText(newsItem.getAuthor());
+                    pubDate.setText(StringHelper.getFriendlyTime(newsItem.getCreateTime()));
 
-                    String body = UIHelper.WEB_STYLE + newsDetail.getBody();
+                    String body = UIHelper.WEB_STYLE + newsItem.getBody();
                     boolean isLoadImage = true;
                     if (isLoadImage) {
                         //过滤掉 img标签的width,height属性
@@ -125,8 +125,8 @@ public class NewsDetail extends Activity {
         new Thread() {
             public void run() {
                 Message message = new Message();
-                newsDetail = ApiHelper.getNewsItem(newsId);
-                message.what = (newsDetail != null && newsDetail.getId() > 0) ? 1 : 0;
+                newsItem = ApiHelper.getNewsItem(newsId);
+                message.what = (newsItem != null && newsItem.getId() > 0) ? 1 : 0;
                 message.obj = null;
                 handler.sendMessage(message);
             }

@@ -12,4 +12,8 @@
 
     <string name="comment_list_head_title">网友评论</string>
     <string name="comment_reply_title">---共有 %d 条评论---</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Main Activity</string>
 </resources>

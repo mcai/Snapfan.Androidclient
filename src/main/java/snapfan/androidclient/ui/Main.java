@@ -51,38 +51,44 @@ public class Main extends Activity {
     }
 
     private void initFrameListViewData() {
-        listViewNewsHandler = this.getListViewHandler(listViewNews, listViewNewsAdapter, listViewNewsFootMore, listViewNewsFootProgress, PAGE_SIZE);
+        this.listViewNewsHandler = this.getListViewHandler(this.listViewNews, this.listViewNewsAdapter, this.listViewNewsFootMore, this.listViewNewsFootProgress, PAGE_SIZE);
 
-        if (listViewNewsData.isEmpty()) {
-            loadListViewNewsData(0, listViewNewsHandler, UIHelper.LIST_VIEW_ACTION_INIT);
+        if (this.listViewNewsData.isEmpty()) {
+            loadListViewNewsData(0, this.listViewNewsHandler, UIHelper.LIST_VIEW_ACTION_INIT);
         }
     }
 
     private void initNewsListView() {
-        listViewNewsAdapter = new ListViewNewsAdapter(this, listViewNewsData, R.layout.news_listitem);
-        listViewNewsFooter = getLayoutInflater().inflate(R.layout.listview_footer, null);
-        listViewNewsFootMore = (TextView) listViewNewsFooter.findViewById(R.id.listview_foot_more);
-        listViewNewsFootProgress = (ProgressBar) listViewNewsFooter.findViewById(R.id.listview_foot_progress);
-        listViewNews = (PullToRefreshListView) findViewById(R.id.frame_listview_news);
-        listViewNews.addFooterView(listViewNewsFooter);
-        listViewNews.setAdapter(listViewNewsAdapter);
-        listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        this.listViewNewsAdapter = new ListViewNewsAdapter(this, this.listViewNewsData, R.layout.news_listitem);
+        this.listViewNewsFooter = getLayoutInflater().inflate(R.layout.listview_footer, null);
+        this.listViewNewsFootMore = (TextView) this.listViewNewsFooter.findViewById(R.id.listview_foot_more);
+        this.listViewNewsFootProgress = (ProgressBar) this.listViewNewsFooter.findViewById(R.id.listview_foot_progress);
+        this.listViewNews = (PullToRefreshListView) findViewById(R.id.frame_listview_news);
+        this.listViewNews.addFooterView(this.listViewNewsFooter);
+        this.listViewNews.setAdapter(this.listViewNewsAdapter);
+        this.listViewNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0 || view == listViewNewsFooter) return;
 
-                NewsItem news = null;
+                NewsItem newsItem;
                 if (view instanceof TextView) {
-                    news = (NewsItem) view.getTag();
+                    newsItem = (NewsItem) view.getTag();
                 } else {
                     TextView tv = (TextView) view.findViewById(R.id.news_listitem_title);
-                    news = (NewsItem) tv.getTag();
+                    newsItem = (NewsItem) tv.getTag();
                 }
-                if (news == null) return;
+                if (newsItem == null) return;
 
-                UIHelper.gotoNewsDetail(view.getContext(), news);
+                //TODO
+                if(newsItem.getAttachmentUrls().isEmpty()) {
+                    UIHelper.gotoNewsDetail(view.getContext(), newsItem);
+                }
+                else {
+                    UIHelper.gotoImageGallery(view.getContext(), newsItem);
+                }
             }
         });
-        listViewNews.setOnScrollListener(new AbsListView.OnScrollListener() {
+        this.listViewNews.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 listViewNews.onScrollStateChanged(view, scrollState);
 
@@ -110,40 +116,40 @@ public class Main extends Activity {
                 listViewNews.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
             }
         });
-        listViewNews.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
+        this.listViewNews.setOnRefreshListener(new PullToRefreshListView.OnRefreshListener() {
             public void onRefresh() {
                 loadListViewNewsData(0, listViewNewsHandler, UIHelper.LIST_VIEW_ACTION_REFRESH);
             }
         });
     }
 
-    private Handler getListViewHandler(final PullToRefreshListView lv, final BaseAdapter adapter, final TextView more, final ProgressBar progress, final int pageSize) {
+    private Handler getListViewHandler(final PullToRefreshListView listView, final BaseAdapter adapter, final TextView more, final ProgressBar progress, final int pageSize) {
         return new Handler() {
-            public void handleMessage(Message msg) {
-                if (msg.what >= 0) {
-                    handleListViewData(msg.what, msg.obj, msg.arg1);
+            public void handleMessage(Message message) {
+                if (message.what >= 0) {
+                    handleListViewData(message.what, message.obj, message.arg1);
 
-                    if (msg.what < pageSize) {
-                        lv.setTag(UIHelper.LIST_VIEW_DATA_FULL);
+                    if (message.what < pageSize) {
+                        listView.setTag(UIHelper.LIST_VIEW_DATA_FULL);
                         adapter.notifyDataSetChanged();
                         more.setText(R.string.load_full);
-                    } else if (msg.what == pageSize) {
-                        lv.setTag(UIHelper.LIST_VIEW_DATA_MORE);
+                    } else if (message.what == pageSize) {
+                        listView.setTag(UIHelper.LIST_VIEW_DATA_MORE);
                         adapter.notifyDataSetChanged();
                         more.setText(R.string.load_more);
                     }
-                } else if (msg.what == -1) {
-                    lv.setTag(UIHelper.LIST_VIEW_DATA_MORE);
+                } else if (message.what == -1) {
+                    listView.setTag(UIHelper.LIST_VIEW_DATA_MORE);
                     more.setText(R.string.load_error);
                 }
                 if (adapter.getCount() == 0) {
-                    lv.setTag(UIHelper.LIST_VIEW_DATA_EMPTY);
+                    listView.setTag(UIHelper.LIST_VIEW_DATA_EMPTY);
                     more.setText(R.string.load_empty);
                 }
                 progress.setVisibility(ProgressBar.GONE);
-                if (msg.arg1 == UIHelper.LIST_VIEW_ACTION_REFRESH) {
-                    lv.onRefreshComplete(getString(R.string.pull_to_refresh_update) + new Date().toLocaleString());
-                    lv.setSelection(0);
+                if (message.arg1 == UIHelper.LIST_VIEW_ACTION_REFRESH) {
+                    listView.onRefreshComplete(getString(R.string.pull_to_refresh_update) + new Date().toLocaleString());
+                    listView.setSelection(0);
                 }
             }
         };
@@ -153,24 +159,24 @@ public class Main extends Activity {
         switch (actionType) {
             case UIHelper.LIST_VIEW_ACTION_INIT:
             case UIHelper.LIST_VIEW_ACTION_REFRESH:
-                NewsItem[] newsItemList = (NewsItem[]) obj;
+                NewsItem[] newsItems = (NewsItem[]) obj;
                 listViewNewsSumData = what;
                 listViewNewsData.clear();
-                listViewNewsData.addAll(Arrays.asList(newsItemList));
+                listViewNewsData.addAll(Arrays.asList(newsItems));
                 break;
             case UIHelper.LIST_VIEW_ACTION_SCROLL:
                 NewsItem[] list = (NewsItem[]) obj;
                 listViewNewsSumData += what;
                 if (listViewNewsData.size() > 0) {
-                    for (NewsItem news1 : list) {
+                    for (NewsItem newsItem : list) {
                         boolean b = false;
                         for (NewsItem news2 : listViewNewsData) {
-                            if (news1.getId() == news2.getId()) {
+                            if (newsItem.getId() == news2.getId()) {
                                 b = true;
                                 break;
                             }
                         }
-                        if (!b) listViewNewsData.add(news1);
+                        if (!b) listViewNewsData.add(newsItem);
                     }
                 } else {
                     listViewNewsData.addAll(Arrays.asList(list));
@@ -183,12 +189,12 @@ public class Main extends Activity {
         new Thread() {
             public void run() {
                 Message message = new Message();
-                NewsItem[] list = ApiHelper.getNewsItems(pageIndex, PAGE_SIZE);
-                if(list == null) {
-                    list = new NewsItem[]{};
+                NewsItem[] newsItems = ApiHelper.getNewsItems(pageIndex, PAGE_SIZE);
+                if(newsItems == null) {
+                    newsItems = new NewsItem[]{};
                 }
-                message.what = list.length;
-                message.obj = list;
+                message.what = newsItems.length;
+                message.obj = newsItems;
                 message.arg1 = action;
                 handler.sendMessage(message);
             }
