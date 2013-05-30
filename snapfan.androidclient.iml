@@ -30,8 +30,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: net.pickapack:pickapack.micro:1.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.3" level="project" />
-    <orderEntry type="library" name="Maven: com.j256.ormlite:ormlite-core:4.42" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.4" level="project" />
+    <orderEntry type="library" name="Maven: com.j256.ormlite:ormlite-core:4.45" level="project" />
     <orderEntry type="library" name="Maven: net.pickapack:pickapack.micro.ext:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.android:android:4.1.1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-logging:commons-logging:1.1.1" level="project" />
@@ -42,7 +42,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: xerces:xmlParserAPIs:2.6.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: xpp3:xpp3:1.1.4c" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.json:json:20080701" level="project" />
-    <orderEntry type="library" name="Maven: com.github.kevinsawicki:http-request:4.1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.kevinsawicki:http-request:5.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.android:support-v4:r7" level="project" />
     <orderEntry type="module" module-name="~apklib-com.github.chrisbanes.pulltorefresh_library_2.1.1" />
     <orderEntry type="module" module-name="~apklib-com.actionbarsherlock_actionbarsherlock_4.2.0" />
